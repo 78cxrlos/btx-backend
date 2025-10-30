@@ -19,13 +19,14 @@ def create_app():
 
     # Enable CORS for frontend
     CORS(
-        app,
-        resources={r"/api/*": {"origins": "http://localhost:5173"}},
-        supports_credentials=True,
-        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allow_headers=["Content-Type", "Authorization"],  
-        expose_headers=["Content-Type", "Authorization"]
-    )
+    app,
+    resources={r"/api/*": {"origins": "*"}},
+    supports_credentials=True,
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
+    expose_headers=["Content-Type", "Authorization"]
+)
+
 
     # Initialize extensions
     db.init_app(app)
@@ -42,7 +43,7 @@ def create_app():
 
     app.register_blueprint(contacts_bp, url_prefix='/api/contacts')
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
-    app.register_blueprint(news_bp, url_prefix='/api/news/')
+    app.register_blueprint(news_bp, url_prefix='/api/news')
 
     # Serve uploaded files
     @app.route("/uploads/<filename>")
