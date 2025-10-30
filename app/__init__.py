@@ -22,7 +22,7 @@ def create_app():
         app,
         origins=[
             "http://localhost:5173",                          # local dev frontend
-            "https://www.btx-capital.com/btx-capital/",      # production frontend
+            "https://www.btx-capital.com/",      # production frontend
         ],
         supports_credentials=True,
         allow_headers=["Content-Type", "Authorization"],
