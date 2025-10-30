@@ -17,16 +17,17 @@ def create_app():
         app.config["UPLOAD_FOLDER"] = os.path.join(os.getcwd(), "uploads")
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
-    # Enable CORS for frontend
+    # ✅ Proper CORS setup (works for dev + production)
     CORS(
-    app,
-    resources={r"/api/*": {"origins": "*"}},
-    supports_credentials=True,
-    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
-    expose_headers=["Content-Type", "Authorization"]
-)
-
+        app,
+        origins=[
+            "http://localhost:5173",       # your local development frontend
+            "https://yourdomain.com",      # replace with your real domain (e.g. https://btx-capital.com)
+        ],
+        supports_credentials=True,
+        allow_headers=["Content-Type", "Authorization"],
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    )
 
     # Initialize extensions
     db.init_app(app)
@@ -34,16 +35,16 @@ def create_app():
     jwt = JWTManager(app)
 
     # Import models so Alembic can detect them
-    from app import models  # ✅ important!
+    from app import models  # ✅ important for migrations
 
     # Register blueprints
     from app.routes.contacts import contacts_bp
     from app.routes.auth import auth_bp
     from app.routes.news import news_bp
 
-    app.register_blueprint(contacts_bp, url_prefix='/api/contacts')
-    app.register_blueprint(auth_bp, url_prefix='/api/auth')
-    app.register_blueprint(news_bp, url_prefix='/api/news')
+    app.register_blueprint(contacts_bp, url_prefix="/api/contacts")
+    app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    app.register_blueprint(news_bp, url_prefix="/api/news")
 
     # Serve uploaded files
     @app.route("/uploads/<filename>")
