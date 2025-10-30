@@ -21,8 +21,8 @@ def create_app():
     CORS(
         app,
         origins=[
-            "http://localhost:5173",       # your local development frontend
-            "https://yourdomain.com",      # replace with your real domain (e.g. https://btx-capital.com)
+            "http://localhost:5173",                          # local dev frontend
+            "https://www.btx-capital.com/btx-capital/",      # production frontend
         ],
         supports_credentials=True,
         allow_headers=["Content-Type", "Authorization"],
